@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: studyum-backend
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 5
+      idle-timeout: 600000
+      pool-name: MyHikariCP
+      auto-commit: false
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      timeout: 2000ms
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 200MB
+
+  web:
+    resources:
+      static-locations: classpath:/static/
+
+server:
+  port: ${PORT:8080}
+  address: 0.0.0.0
+
+mybatis:
+  mapper-locations: classpath:/mappers/**/*.xml
+  type-aliases-package: com.studyumbackend
+  config-location: classpath:/mybatis-config.xml
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRE_MS}
+
+logging:
+  level:
+    com.studyum: DEBUG
+    org.mybatis: DEBUG
