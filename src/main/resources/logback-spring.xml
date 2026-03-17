@@ -1,9 +1,7 @@
 <configuration scan="true" scanPeriod="60 seconds">
     <springProperty scope="context" name="logPath"    source="log.config.path"      defaultValue="./logs/"/>
-    <springProperty scope="context" name="fileName"   source="log.config.file-name" defaultValue="application"/>
+    <springProperty scope="context" name="fileName"   source="log.config.fileName" defaultValue="application"/>
 
-    <property name="logPath"		value="${log.config.path}" />
-    <property name="fileName"		value="${log.config.fileName}" />
     <property name="maxHistory"		value="30" />
     <property name="maxFileSize"	value="10MB" />
 
