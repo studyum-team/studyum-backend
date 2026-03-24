@@ -14,8 +14,10 @@ public class User {
     private String userEmail;
     // 암호화된 비밀번호
     private String userPassword;
-    // 닉네임
+    // 이름
     private String userName;
+    // 닉네임
+    private String userNickname;
     // 연락처
     private String userPhone;
     // 생년월일
