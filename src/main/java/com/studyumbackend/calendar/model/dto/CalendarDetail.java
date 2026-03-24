@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Calendar {
+public class CalendarDetail {
     // 일정 고유 식별자 (Auto)
     private Long calendarEventId;
     // 개인 일정 소유자, 스터디 일정이면 null
@@ -26,4 +26,8 @@ public class Calendar {
     private String calendarEventEndTime;
     // 일정 완료 여부
     private boolean calendarEventIsDone;
+    // 목표 제목
+    private String userGoalTitle;
+    // 목표 상태
+    private String goalStatus;
 }
