@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.studyumbackend.user.model.dto.User">
+
+    <!-- 회원가입 -->
+    <insert id="insertUserInfo" parameterType="User" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
+        INSERT INTO users (user_email, user_password, user_name, user_nickname, user_phone, user_birth_date)
+        VALUES (#{userEmail}, #{userPassword}, #{userName}, #{userNickname}, #{userPhone}, #{userBirthDate})
+    </insert>
+
+    <!-- 이메일 중복확인 -->
+    <select id="selectExistedEmail" resultType="int">
+        SELECT COUNT(1)
+        FROM users
+        WHERE user_email = #{userEmail}
+    </select>
+
+    <!-- 연락처 중복확인 -->
+    <select id="selectExistedPhone" resultType="int">
+        SELECT COUNT(1)
+        FROM users
+        WHERE user_phone = #{userPhone}
+    </select>
+
+    <!-- 닉네임 중복확인 -->
+    <select id="selectExistedNickname" resultType="int">
+        SELECT COUNT(1)
+        FROM users
+        WHERE user_nickname = #{userNickname}
+    </select>
+
+    <!-- 로그인 -->
+    <select id="selectLoginInfo" resultType="User">
+        SELECT user_email, user_password
+        FROM users
+        WHERE user_email = #{userEmail}
+    </select>
+
+    <!-- 회원정보 수정 -->
+    <update id="updateUserInfo">
+        UPDATE users
+        SET user_profile_image = #{userProfileImage},
+            user_nickname = #{userNickname},
+            user_bio = #{userBio}
+        WHERE user_id = #{userId}
+    </update>
+
+    <!-- 회원탈퇴 -->
+    <update id="updateUserStatus">
+        UPDATE users
+        SET user_status = 'DEACTIVE'
+        WHERE user_id = #{userId}
+    </update>
+
+    <!-- 마이페이지 회원정보 조회 -->
+    <select id="selectUserInfo" resultType="User">
+        SELECT user_id, user_nickname, user_profile_image, user_bio
+        FROM users
+        WHERE user_email = #{userEmail}
+    </select>
+
+    <!-- 마이페이지 활동량 조회 ('지난주 일요일'부터 현재까지) -->
+    <select id="selectUserDailyActivity" resultType="UserDailyActivity">
+        SELECT activity_date, is_active
+        FROM user_daily_activity
+        WHERE user_id = #{userId}
+    <![CDATA[
+          AND activity_date >= date_trunc('week', now() - interval '1 week') - interval '1 day'
+          AND activity_date <= now()
+    ]]>
+    ORDER BY activity_date ASC
+    </select>
+
+
+
+</mapper>
