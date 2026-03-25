@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.studyumbackend.calendarEvent.model.mapper.CalendarMapper">
+    <!-- 홈 화면 -->
+    <!-- 일정 생성 (개인) -->
+    <insert id="insertCalendarEvent" parameterType="CalendarEvent" useGeneratedKeys="true"
+            keyProperty="calendarEventId" keyColumn="calendar_event_id">
+        INSERT INTO calendar_event(user_id, user_goal_id, calendar_event_title,
+                                   calendar_event_description, calendar_event_start_time, calendar_event_end_time)
+        VALUES(#{userId}, #{userGoalId}, #{calendarEventTitle}, #{calendarEventDescription},
+               #{calendarEventStartTime}, #{calendarEventEndTime})
+    </insert>
+
+    <!-- 일정 전체 조회 -->
+    <!-- 프론트에서 날짜 클랙했을 때 목록 조회하도록 진행 -->
+    <select id="selectCalendarEvent" resultType="CalendarEvent">
+        SELECT calendar_event_id, user_goal_id, calendar_event_title,
+               calendar_event_start_time, calendar_event_end_time, calendar_event_is_done
+        FROM calendar_event
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 일정 상세 조회 -->
+    <select id="selectCalendarEventDetail" resultType="CalendarEventWithGoalDTO">
+        SELECT calendar_event_title, calendar_event_description, calendar_event_start_time,
+               calendar_event_is_done, user_goal_id, user_goal_title
+        FROM v_calendar_event_with_goal
+        WHERE calendar_event_id = #{calendarEventId}
+    </select>
+
+    <!-- 일정 수정 -->
+    <update id="updateCalendarEvent" parameterType="CalendarEvent">
+        UPDATE calendar_event
+        SET calendar_event_title = #{calendarEventTitle},
+            calendar_event_end_time = #{calendarEventEndTime}
+        WHERE calendar_event_id = #{calendarEventId}
+    </update>
+
+    <!-- 일정 완료 체크 -->
+    <update id="updateCalendarEventCheck">
+        UPDATE calendar_event
+        SET calendar_event_is_done = #{calendarEventIsDone}
+        WHERE calendar_event_id = #{calendarEventId}
+    </update>
+
+    <!-- 일정 삭제 -->
+    <delete id="deleteCalendarEvent">
+        DELETE FROM calendar_event
+        WHERE calendar_event_id = #{calendarEventId}
+    </delete>
+
+    <!-- 스터디룸 -->
+    <!-- 일정 생성 (스터디룸) -->
+    <insert id="insertChatRoomCalendarEvent" parameterType="CalendarEvent" useGeneratedKeys="true"
+            keyProperty="calendarEventId" keyColumn="calendar_event_id">
+        INSERT INTO calendar_event(chat_room_id, calendar_event_title,
+                                   calendar_event_description, calendar_event_start_time, calendar_event_end_time)
+        VALUES(#{chatRoomId}, #{calendarEventTitle}, #{calendarEventDescription},
+               #{calendarEventStartTime}, #{calendarEventEndTime})
+    </insert>
+
+    <!-- 스터디 공유 일정 목록 -->
+    <select id="selectChatRoomList" resultType="CalendarEventWithGoalDTO">
+        SELECT calendar_event_id, calendar_event_title, calendar_event_start_time,
+               calendar_event_end_time, calendar_event_is_done
+        FROM calendar_event
+        WHERE chat_room_id = #{chatRoomId}
+    </select>
+</mapper>
