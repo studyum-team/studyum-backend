@@ -12,13 +12,13 @@
             post_content,
             post_image
         ) VALUES (
-                     #{userId},
-                     #{categoryId},
-                     #{chatRoomId},
-                     #{postTitle},
-                     #{postContent},
-                     #{postImage}
-                 )
+             #{userId},
+             #{categoryId},
+             #{chatRoomId},
+             #{postTitle},
+             #{postContent},
+             #{postImage}
+        )
     </insert>
 
     <!-- 게시글 목록 + 검색 -->
@@ -129,4 +129,5 @@
         WHERE user_id = #{userId}
         ORDER BY post_created_at DESC
     </select>
+
 </mapper>
