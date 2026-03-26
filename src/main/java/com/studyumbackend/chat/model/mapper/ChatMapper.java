@@ -5,7 +5,10 @@ import com.studyumbackend.chat.model.dto.chatroom.ChatRoom;
 import com.studyumbackend.chat.model.dto.chatroom.ChatRoomInfoChangeRequest;
 import com.studyumbackend.chat.model.dto.chatroom.ChatRoomListDTO;
 import com.studyumbackend.chat.model.dto.chatroom.ChatRoomSearchRequest;
+import com.studyumbackend.chat.model.dto.chatroomuser.ChatRoomMemberResponse;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface ChatMapper {
@@ -30,26 +33,34 @@ public interface ChatMapper {
     CategoryResponse findCategoryWithParent(Long categoryId);
 
     // 채팅방 정보 수정
+    // TODO: Service 쪽에서 유저 권한 검증 로직 추가 (OWNER만 수정 가능)
     int updateChatRoomInfoById(ChatRoomInfoChangeRequest request, Long chatRoomId);
 
     // 채팅방 삭제 (소프트 삭제)
+    // TODO: Service 쪽에서 유저 권한 검증 로직 추가 (OWNER만 삭제 가능)
     int deleteChatRoom(Long chatRoomId);
 
+    // 유저 권한 검증
+    String selectUserRoleByChatRoomId(Long chatRoomId, Long userId);
 
     /// ====================
     ///     chatRoomUser
     /// ====================
     // 채팅방 멤버 목록 조회
-
+    // TODO: Service 레이어에서 ChatRoomMemberListResponse에 set(조립) - total 데이터 (리스트.size() 사용)
+    List<ChatRoomMemberResponse> selectChatRoomUserListByChatRoomId(Long chatRoomId);
 
     // 멤버 역할 변경
-
+    // TODO: Service 쪽에서 유저 권한 검증 로직 추가 (OWNER만 변경 가능)
+    int updateChatRoomUserRole(String chatRoomUserRole, Long userId);
 
     // 멤버 강퇴
-
+    // TODO: Service 쪽에서 유저 권한 검증 로직 추가 (OWNER만 강퇴 가능)
+    int deleteUserFromChatRoom(Long chatRoomUserId);
 
     // 채팅방 나가기 (본인)
-
+    // TODO: 나가는 본인이 OWNER인 경우 스터디룸 삭제 같이 작동 (유저 권한 검증 로직 추가 필요)
+    int deleteMyselfFromChatRoom(Long userId, Long chatRoomId);
 
     /// ====================
     ///    chatRoomInvite
