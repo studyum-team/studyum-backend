@@ -66,6 +66,14 @@
         WHERE chat_room_id = #{chatRoomId}
     </select>
     <!-- 2. 카테고리 Self Join -->
+    <resultMap id="categoryResultMap" type="CategoryResponse">
+        <result property="categoryId"   column="category_id"/>
+        <result property="categoryName" column="category_name"/>
+        <association property="parentCategory" javaType="CategoryResponse$ParentCategory">
+            <result property="categoryId"   column="parent_category_id"/>
+            <result property="categoryName" column="parent_category_name"/>
+        </association>
+    </resultMap>
     <select id="findCategoryWithParent" resultType="categoryResultMap">
         SELECT
             c.category_id,
@@ -76,17 +84,8 @@
         LEFT JOIN category p ON c.parent_id = p.category_id
         WHERE c.category_id = #{categoryId}
     </select>
-    <resultMap id="categoryResultMap" type="CategoryResponse">
-        <result property="categoryId"   column="category_id"/>
-        <result property="categoryName" column="category_name"/>
-        <association property="parentCategory" javaType="CategoryResponse$ParentCategory">
-            <result property="categoryId"   column="parent_category_id"/>
-            <result property="categoryName" column="parent_category_name"/>
-        </association>
-    </resultMap>
 
     <!-- 채팅방 정보 수정 -->
-    <!-- TODO: 정보 수정 시 유저 권한 OWNER인지 확인 -->
     <update id="updateChatRoomInfoById">
         UPDATE chat_room
         SET chat_room_name = #{chatRoomName},
@@ -97,30 +96,68 @@
     </update>
 
     <!-- 채팅방 삭제 (소프트 삭제) -->
-    <!-- TODO: 채팅방 삭제 시 유저 권한 OWNER인지 확인 -->
     <update id="deleteChatRoom">
         UPDATE chat_room
         SET chat_room_recruit_status = 'DELETED'
         WHERE chat_room_id = #{chatRoomId}
     </update>
 
+    <!-- 유저 권한 검증 : chatRoomId와 userId로 필터링 -->
+    <select id="selectUserRoleByChatRoomId">
+        SELECT chat_room_user_role
+        FROM chat_room_user
+        WHERE chat_room_id = #{chatRoomId}
+          AND user_id = #{userId}
+    </select>
+
 
     <!-- =================
         chatRoomUser
     ================= -->
     <!-- 채팅방 멤버 목록 조회 -->
-    <select id="selectChatRoomUserListByChatRoomId" resultType="">
-        SELECT *
-        FROM
+    <resultMap id="ChatRoomMemberResultMap" type="ChatRoomMemberResponse">
+        <id     property="chatRoomUserId"       column="chat_room_user_id"/>
+        <result property="chatRoomUserRole"     column="chat_room_user_role"/>
+        <result property="chatRoomUserJoinedAt" column="chat_room_user_joined_at"/>
+
+        <!-- 중첩 객체 매핑 -->
+        <association property="user" javaType="ChatRoomSingleUserResponse">
+            <id     property="userId"           column="user_id"/>
+            <result property="userName"         column="user_name"/>
+            <result property="userProfileImage" column="user_profile_image"/>
+        </association>
+    </resultMap>
+    <select id="selectChatRoomUserListByChatRoomId" resultMap="ChatRoomMemberResultMap">
+        SELECT
+            chat_room_user_id,
+            chat_room_user_role,
+            chat_room_user_joined_at,
+            user_id,
+            user_nickname,
+            user_profile_image
+        FROM v_chat_room_members
+        WHERE chat_room_id = #{chatRoomId}
     </select>
 
     <!-- 멤버 역할 변경 -->
+    <update id="updateChatRoomUserRole">
+        UPDATE chat_room_user
+        SET chat_room_user_role = #{chatRoomUserRole}
+        WHERE user_id = #{userId}
+    </update>
 
     <!-- 멤버 강퇴 -->
+    <delete id="deleteUserFromChatRoom">
+        DELETE FROM chat_room_user
+        WHERE chat_room_user_id = #{chatRoomUserId}
+    </delete>
 
     <!-- 채팅방 나가기 (본인) -->
-
-
+    <delete id="deleteMyselfFromChatRoom">
+        DELETE FROM chat_room_user
+        WHERE user_id = #{userId}
+          AND chat_room_id = #{chatRoomId}
+    </delete>
 
 
     <!-- =================
