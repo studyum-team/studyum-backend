@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!-- 데이터 베이스에 저장되어 있는 데이터를 통해 자동 응답 생성 -->
+
 <mapper namespace="com.studyumbackend.chat.model.mapper.ChatMapper">
     <!-- =================
            chatRoom
@@ -22,18 +22,18 @@
     </insert>
 
     <!-- 채팅방 목록 검색 : 카테고리/검색어 -->
-    <select id="selectChatRoomList" parameterType="ChatRoomSearchRequestDTO" resultType="ChatRoomLSearchResultDTO">
+    <select id="selectChatRoomList" parameterType="ChatRoomSearchRequest" resultType="ChatRoomSearchResponse">
         SELECT
-        cr.chat_room_id,
-        cr.chat_room_name,
-        cr.chat_room_description,
-        cr.chat_room_image,
-        cr.chat_room_visibility,
-        cr.chat_room_current_member,
-        cr.chat_room_max_member,
-        cr.chat_room_recruit_status,
-        cr.chat_room_created_at,
-        c.category_name
+            cr.chat_room_id,
+            cr.chat_room_name,
+            cr.chat_room_description,
+            cr.chat_room_image,
+            cr.chat_room_visibility,
+            cr.chat_room_current_member,
+            cr.chat_room_max_member,
+            cr.chat_room_recruit_status,
+            cr.chat_room_created_at,
+            c.category_name
         FROM chat_room cr
         INNER JOIN category c ON cr.category_id = c.category_id
         <where>
@@ -52,23 +52,67 @@
     </select>
 
     <!-- 본인 채팅방 목록 조회 -->
-    <select id="selectChatRoomListByUserId" parameterType="String" resultType="ChatRoomListDTO">
+    <select id="selectChatRoomListByUserId" resultType="ChatRoomListDTO">
         SELECT *
         FROM v_chat_room_list
         WHERE user_id = #{userId}
     </select>
 
     <!-- 채팅방 상세 조회 -->
+    <!-- 1. 채팅방 기본 정보 조회 -->
+    <select id="findChatRoomById" resultType="ChatRoom">
+        SELECT *
+        FROM chat_room
+        WHERE chat_room_id = #{chatRoomId}
+    </select>
+    <!-- 2. 카테고리 Self Join -->
+    <select id="findCategoryWithParent" resultType="categoryResultMap">
+        SELECT
+            c.category_id,
+            c.category_name,
+            p.category_id AS parent_category_id,
+            p.category_name AS parent_category_name
+        FROM  category c
+        LEFT JOIN category p ON c.parent_id = p.category_id
+        WHERE c.category_id = #{categoryId}
+    </select>
+    <resultMap id="categoryResultMap" type="CategoryResponse">
+        <result property="categoryId"   column="category_id"/>
+        <result property="categoryName" column="category_name"/>
+        <association property="parentCategory" javaType="CategoryResponse$ParentCategory">
+            <result property="categoryId"   column="parent_category_id"/>
+            <result property="categoryName" column="parent_category_name"/>
+        </association>
+    </resultMap>
 
     <!-- 채팅방 정보 수정 -->
+    <!-- TODO: 정보 수정 시 유저 권한 OWNER인지 확인 -->
+    <update id="updateChatRoomInfoById">
+        UPDATE chat_room
+        SET chat_room_name = #{chatRoomName},
+            chat_room_description = #{chatRoomDescription},
+            chat_room_max_member = #{chatRoomMaxMember},
+            chat_room_recruit_status = #{chatRoomRecruitStatus}
+        WHERE chat_room_id = #{chatRoomId}
+    </update>
 
-    <!-- 채팅방 삭제 -->
+    <!-- 채팅방 삭제 (소프트 삭제) -->
+    <!-- TODO: 채팅방 삭제 시 유저 권한 OWNER인지 확인 -->
+    <update id="deleteChatRoom">
+        UPDATE chat_room
+        SET chat_room_recruit_status = 'DELETED'
+        WHERE chat_room_id = #{chatRoomId}
+    </update>
 
 
     <!-- =================
         chatRoomUser
     ================= -->
     <!-- 채팅방 멤버 목록 조회 -->
+    <select id="selectChatRoomUserListByChatRoomId" resultType="">
+        SELECT *
+        FROM
+    </select>
 
     <!-- 멤버 역할 변경 -->
 
@@ -80,7 +124,7 @@
 
 
     <!-- =================
-       chatRoomInvite
+         chatRoomInvite
     ================= -->
     <!-- 유저가 채팅방 직접 신청 -->
 
@@ -96,7 +140,7 @@
 
 
     <!-- =================
-        chatMessage
+          chatMessage
     ================= -->
     <!-- 메세지 목록 (커서 페이징) -->
 
