@@ -1,4 +1,4 @@
-package com.studyumbackend.chat.model.dto;
+package com.studyumbackend.chat.model.dto.chatroom;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatRoomSearchResultDTO {
+public class ChatRoomSearchResponse {
     // 채팅방 고유 식별자 (Auto)
-    private long chatRoomId;
+    private Long chatRoomId;
     // 채팅방 카테고리 ID
-    private long categoryId;
+    private Long categoryId;
     // 채팅방 이름
     private String chatRoomName;
     // 채팅방 소개
@@ -21,9 +21,9 @@ public class ChatRoomSearchResultDTO {
     // 채팅방 공개 여부
     private String chatRoomVisibility;
     // 채팅방 최대 입장 인원
-    private int chatRoomMaxMember;
+    private Integer chatRoomMaxMember;
     // 채팅방 참여 인원
-    private int chatRoomCurrentMember;
+    private Integer chatRoomCurrentMember;
     // 채팅방 모집 상태
     private String chatRoomRecruitStatus;
     // 채팅방 생성 일자

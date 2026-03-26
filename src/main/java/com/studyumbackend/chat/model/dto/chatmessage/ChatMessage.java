@@ -1,4 +1,4 @@
-package com.studyumbackend.chat.model.dto;
+package com.studyumbackend.chat.model.dto.chatmessage;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChatMessage {
     // 메세지 고유 식별자 (Auto)
-    private long chatMessageId;
+    private Long chatMessageId;
     // 메세지가 속한 채팅방
-    private long chatRoomId;
+    private Long chatRoomId;
     // 메세지 발신자
-    private long chatMessageSenderId;
+    private Long chatMessageSenderId;
     // 메세지 내용
     private String chatMessageContent;
     // 메세지 타입
