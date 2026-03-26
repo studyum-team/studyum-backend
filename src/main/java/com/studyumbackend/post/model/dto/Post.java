@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Post {
     // 게시글 고유 식별자 (Auto)
-    private long postId;
+    private Long postId;
     // 작성자
-    private long userId;
+    private Long userId;
     // 카테고리
-    private long categoryId;
+    private Long categoryId;
     // 연관 채팅방(스터디룸)
-    private long chatRoomId;
+    private Long chatRoomId;
     // 게시글 제목
     private String postTitle;
     // 게시글 본문
@@ -23,9 +23,9 @@ public class Post {
     // 게시글 이미지
     private String postImage;
     // 조회수
-    private int postViewCount;
+    private Integer postViewCount;
     // 게시물 신고 횟수
-    private int postReportCount;
+    private Integer postReportCount;
     // 작성일시
     private String postCreatedAt;
     // 수정일시
