@@ -75,6 +75,10 @@
     ORDER BY activity_date ASC
     </select>
 
-
+    <!-- 활동량 추가 -->
+    <insert id="insertUserDailyActivity" parameterType="User" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
+        INSERT INTO user_daily_activity (user_id, activity_date, is_active)
+        VALUES (#{userId}, #{activityDate}, #{isActive})
+    </insert>
 
 </mapper>
