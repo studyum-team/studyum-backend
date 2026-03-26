@@ -20,7 +20,7 @@ public class PostDetailDTO {
     // 게시글 이미지
     private String postImage;
     // 조회수
-    private int postViewCount;
+    private Integer postViewCount;
     // 작성일시
     private String postCreatedAt;
     // 회원 고유 식별자

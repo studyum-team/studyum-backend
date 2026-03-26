@@ -10,13 +10,10 @@ import lombok.NoArgsConstructor;
 public class PostSearchRequest {
     // 검색 키워드
     private String keyword;
-
     // 대분류
     private Long parentCategoryId;
-
     // 소분류
     private Long categoryId;
-
    // 채팅방 모집 상태
     private String chatRoomRecruitStatus;
 }
