@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.studyumbackend.post.model.mapper.PostMapper">
+    <!-- 게시글 작성 -->
+    <insert id="insertPost" parameterType="Post" useGeneratedKeys="true" keyProperty="postId" keyColumn="post_id">
+        INSERT INTO post (
+            user_id,
+            category_id,
+            chat_room_id,
+            post_title,
+            post_content,
+            post_image
+        ) VALUES (
+                     #{userId},
+                     #{categoryId},
+                     #{chatRoomId},
+                     #{postTitle},
+                     #{postContent},
+                     #{postImage}
+                 )
+    </insert>
+
+    <!-- 게시글 목록 + 검색 -->
+    <select id="selectPostList" parameterType="PostSearchRequest" resultType="PostListDTO">
+        SELECT *
+        FROM v_post_list
+        <where>
+            <!-- 검색 -->
+            <if test="keyword != null and keyword != ''">
+                AND post_title ILIKE CONCAT('%', #{keyword}, '%')
+            </if>
+
+            <!-- 대분류 -->
+            <if test="parentCategoryId != null">
+                AND parent_category_id = #{parentCategoryId}
+            </if>
+
+            <!-- 소분류 -->
+            <if test="categoryId != null">
+                AND category_id = #{categoryId}
+            </if>
+
+            <!-- 모집 상태 : 셋 중 하나만 실행됨 -->
+            <choose>
+                <when test="chatRoomRecruitStatus == 'RECRUITING'">
+                    AND chat_room_recruit_status = 'RECRUITING'
+                </when>
+                <when test="chatRoomRecruitStatus == 'CLOSED'">
+                    AND chat_room_recruit_status = 'CLOSED'
+                </when>
+                <when test="chatRoomRecruitStatus == 'GENERAL'">
+                    AND chat_room_id IS NULL
+                </when>
+                <!-- null이거나 위 셋 다 아닌 경우 → 조건 없이 전체 조회 -->
+                <otherwise>
+                    <!-- no filter -->
+                </otherwise>
+            </choose>
+        </where>
+
+        <!-- 기본 정렬 (최신순 고정) -->
+        ORDER BY post_created_at DESC
+    </select>
+
+    <!-- 게시글 상세 조회 -->
+    <select id="selectPostDetailById" resultType="PostDetailDTO">
+        SELECT *
+        FROM v_post_detail
+        WHERE post_id = #{postId}
+    </select>
+
+    <!-- 게시글 수정 -->
+    <update id="updatePost" parameterType="Post">
+        UPDATE post
+        SET category_id = #{categoryId},
+            chat_room_id = #{chatRoomId},
+            post_title = #{postTitle},
+            post_content = #{postContent},
+            post_image = #{postImage}
+        WHERE post_id = #{postId}
+        AND user_id = #{userId}
+    </update>
+
+    <!-- 게시글 삭제 -->
+    <delete id="deletePost">
+        DELETE FROM post
+        WHERE post_id = #{postId}
+          AND user_id = #{userId}
+    </delete>
+
+    <!-- 게시글 좋아요 -->
+    <insert id="insertPostLike" parameterType="PostLike" useGeneratedKeys="true" keyProperty="postLikeId" keyColumn="post_like_id">
+        INSERT INTO post_like (
+           post_id,
+           user_id
+        )
+        VALUES (
+            #{postId},
+            #{userId}
+        )
+    </insert>
+
+    <!-- 게시글 좋아요 취소 -->
+    <delete id="deletePostLike" parameterType="PostLike">
+        DELETE FROM post_like
+        WHERE post_id = #{postId}
+          AND user_id = #{userId}
+    </delete>
+
+    <!-- 게시글 신고 -->
+    <update id="updatePostReportCount">
+        UPDATE post
+        SET post_report_count = post_report_count + 1
+        WHERE post_id = #{postId}
+    </update>
+
+    <!-- 게시글 조회수 -->
+    <update id="updatePostViewCount">
+        UPDATE post
+        SET post_view_count = post_view_count + 1
+        WHERE post_id = #{postId}
+    </update>
+
+    <!-- 특정 유저가 쓴 게시글 -->
+    <select id="selectPostListByUserId" resultType="PostListDTO">
+        SELECT *
+        FROM v_post_list
+        WHERE user_id = #{userId}
+        ORDER BY post_created_at DESC
+    </select>
+</mapper>
