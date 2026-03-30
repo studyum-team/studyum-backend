@@ -74,7 +74,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
                         try {
                             if (jwtUtil.validateToken(token)) {
-                                int userId = jwtUtil.getUserIdFromToken(token);
+                                Long userId = jwtUtil.getUserIdFromToken(token);
 
                                 Authentication auth = new UsernamePasswordAuthenticationToken(
                                         String.valueOf(userId),
