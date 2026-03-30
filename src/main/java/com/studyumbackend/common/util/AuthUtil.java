@@ -10,7 +10,7 @@ public class AuthUtil {
 
     private final JwtUtil jwtUtil;
 
-    public int getCurrentUserId(String authHeader) {
+    public Long getCurrentUserId(String authHeader) {
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new UnauthorizedException("로그인이 필요합니다.");
