@@ -66,6 +66,7 @@
         WHERE chat_room_id = #{chatRoomId}
     </select>
     <!-- 2. 카테고리 Self Join -->
+    <!--
     <resultMap id="categoryResultMap" type="CategoryResponse">
         <result property="categoryId"   column="category_id"/>
         <result property="categoryName" column="category_name"/>
@@ -84,6 +85,7 @@
         LEFT JOIN category p ON c.parent_id = p.category_id
         WHERE c.category_id = #{categoryId}
     </select>
+    -->
 
     <!-- 채팅방 정보 수정 -->
     <update id="updateChatRoomInfoById">
