@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.studyumbackend.calendarEvent.model.mapper.CalendarMapper">
+<mapper namespace="com.studyumbackend.calendar.model.mapper.CalendarMapper">
     <!-- 홈 화면 -->
     <!-- 일정 생성 (개인) -->
     <insert id="insertCalendarEvent" parameterType="CalendarEvent" useGeneratedKeys="true"
@@ -40,7 +40,7 @@
     <!-- 일정 완료 체크 -->
     <update id="updateCalendarEventCheck">
         UPDATE calendar_event
-        SET calendar_event_is_done = #{calendarEventIsDone}
+        SET calendar_event_is_done = NOT calendar_event_is_done
         WHERE calendar_event_id = #{calendarEventId}
     </update>
 
@@ -61,7 +61,7 @@
     </insert>
 
     <!-- 스터디 공유 일정 목록 -->
-    <select id="selectChatRoomList" resultType="CalendarEventWithGoalDTO">
+    <select id="selectChatRoomList" resultType="CalendarEvent">
         SELECT calendar_event_id, calendar_event_title, calendar_event_start_time,
                calendar_event_end_time, calendar_event_is_done
         FROM calendar_event
