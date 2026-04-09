@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.studyumbackend.goal.model.mapper.GoalMapper">
+    <!-- 목표 생성 -->
+    <insert id="insertGoal" parameterType="Goal" useGeneratedKeys="true"
+            keyProperty="userGoalId" keyColumn="user_goal_id">
+        INSERT INTO user_goal(user_id, user_goal_title)
+        VALUES (#{userId}, #{userGoalTitle})
+    </insert>
+
+    <!-- 본인 목표 조회 -->
+    <select id="selectGoal" resultType="Goal">
+        SELECT user_goal_id, user_goal_title, user_id,
+               goal_status, goal_created_at
+        FROM user_goal
+        WHERE user_id = #{userId} AND goal_status = 'ACTIVE'
+    </select>
+
+    <!-- 목표 수정 (기존 ARCHIVED 변경) -->
+    <update id="updateGoal">
+        UPDATE user_goal
+        SET goal_status = 'ARCHIVED'
+        WHERE user_goal_id = #{userGoalId}
+    </update>
+
+    <!-- 목표 삭제 (기존 ARCHIVED 변경) -->
+    <update id="deleteGoal">
+        UPDATE user_goal
+        SET goal_status = 'ARCHIVED'
+        WHERE user_goal_id = #{userGoalId}
+    </update>
+</mapper>
