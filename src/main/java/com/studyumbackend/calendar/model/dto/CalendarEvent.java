@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,9 +23,9 @@ public class CalendarEvent {
     // 일정 상세 내용
     private String calendarEventDescription;
     // 시작 일시
-    private String calendarEventStartTime;
+    private LocalDateTime calendarEventStartTime;
     // 종료 일시
-    private String calendarEventEndTime;
+    private LocalDateTime calendarEventEndTime;
     // 일정 완료 여부
     private boolean calendarEventIsDone;
 }

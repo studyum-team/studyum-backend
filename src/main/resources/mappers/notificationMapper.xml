@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.studyumbackend.notification.model.mapper.NotificationMapper">
+    <!-- 알림 목록 전체 조회 -->
+    <select id="selectAllNotification" resultType="Notification">
+        SELECT notification_id, user_id, notification_type, notification_reference_id,
+               notification_message, notification_is_read, notification_created_at
+        FROM notification
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 알림 목록 읽지않음 조회 -->
+    <select id="selectUnreadNotification" resultType="Notification">
+        SELECT notification_id, user_id, notification_type, notification_reference_id,
+               notification_message, notification_is_read, notification_created_at
+        FROM notification
+        WHERE user_id = #{userId}
+          AND notification_is_read = false
+    </select>
+    <!-- 알림 단건 읽음 처리 -->
+    <update id="updateNotification">
+        UPDATE notification
+        SET notification_is_read = true
+        WHERE notification_id = #{notificationId}
+    </update>
+
+    <!-- 알림 전체 읽음 처리 -->
+    <update id="updateAllNotification">
+        UPDATE notification
+        SET notification_is_read = true
+        WHERE user_id = #{userId}
+    </update>
+
+    <!-- 알림 단건 삭제 -->
+    <delete id="deleteNotification">
+        DELETE FROM notification
+        WHERE notification_id = #{notificationId}
+    </delete>
+</mapper>
