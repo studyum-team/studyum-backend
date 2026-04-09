@@ -61,6 +61,7 @@ public class UserServiceImpl implements UserService {
         validateUtil.validateName(user.getUserName());
         validateUtil.validateName(user.getUserNickname());
         validateUtil.validatePhone(user.getUserPhone());
+        validateUtil.validateBirth(user.getUserBirthDate().toString());
 
         String encodePassword = bCryptPasswordEncoder.encode(user.getUserPassword());
         user.setUserPassword(encodePassword);
@@ -117,7 +118,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.login(userEmail);
 
         // 비밀번호 검증
-        if (bCryptPasswordEncoder.matches(userEmail, user.getUserPassword())) {
+        if (bCryptPasswordEncoder.matches(userPassword, user.getUserPassword())) {
             log.info("✅ 로그인 성공 - 이메일 : {}", userEmail);
             return user;
         }
