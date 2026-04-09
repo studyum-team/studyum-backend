@@ -29,7 +29,7 @@ public class JwtUtil {
     /**
      * JWT 토큰 생성
      */
-    public String generateToken(int userId, String userEmail) {
+    public String generateToken(Long userId, String userEmail) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + expirationTime);
 
