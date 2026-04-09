@@ -22,7 +22,7 @@ public interface CommentMapper {
     int deleteComment(Comment comment);
 
     // 댓글 신고
-    int updateCommentReportCount(Comment comment);
+    int updateCommentReportCount(Long commentId);
 
     // 내가 쓴 댓글
     List<UserCommentWithPostDTO> selectCommentByUserId(Long userId);
