@@ -25,10 +25,13 @@ public class PostController {
      * POST /api/posts
      *
      * @param post 작성할 게시글 정보
+     * @param token 토큰
      * @return 200 OK
      */
     @PostMapping
-    public ResponseEntity<Void> postPost(@RequestBody Post post) {
+    public ResponseEntity<Void> postPost(@RequestBody Post post,
+                                         @RequestHeader("Authorization") String token) {
+        post.setUserId(authUtil.getCurrentUserId(token));
         log.info("🟢 게시글 작성 요청 post={}", post);
         postService.postPost(post);
         return ResponseEntity.ok().build();
@@ -68,12 +71,14 @@ public class PostController {
 
     /**
      * 게시글 수정
+     * PATCH /api/posts/{postId}
+     *
      * @param postId 수정할 게시글 ID
      * @param post 수정할 내용
      * @param token 토큰
      * @return 200 OK
      */
-     @PatchMapping("/{postId}")
+    @PatchMapping("/{postId}")
     public ResponseEntity<Void> putPost(@PathVariable Long postId,
                                         @RequestBody Post post,
                                         @RequestHeader("Authorization") String token) {
@@ -86,6 +91,8 @@ public class PostController {
 
     /**
      * 게시글 삭제
+     * DELETE /api/posts/{postId}
+     *
      * @param postId 삭제할 게시글 ID
      * @param token 토큰
      * @return 204 No Content
@@ -149,15 +156,17 @@ public class PostController {
      * @param postId 신고할 게시글 ID
      * @return 200 OK
      */
-     @PostMapping("/{postId}/report")
+    @PostMapping("/{postId}/report")
     public ResponseEntity<Void> putPostReportCount(@PathVariable Long postId) {
          log.info("🟢 게시글 신고 postId={}", postId);
          postService.putPostReportCount(postId);
          return ResponseEntity.ok().build();
-     }
+    }
 
     /**
      * 특정 유저가 쓴 게시글
+     * GET /api/posts/user/{userId}
+     *
      * @param userId 조회할 유저 ID
      * @return 게시글 목록
      */

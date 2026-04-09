@@ -7,6 +7,14 @@
     <select id="selectCategoryList" resultType="Category">
         SELECT *
         FROM category
+        <choose>
+            <when test="_parameter != null"> <!--if-->
+                WHERE parent_id = #{categoryId}
+            </when>
+            <otherwise> <!--else-->
+                WHERE parent_id IS NULL
+            </otherwise>
+        </choose>
         ORDER BY category_id
     </select>
 
