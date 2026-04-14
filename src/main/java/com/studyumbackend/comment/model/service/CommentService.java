@@ -20,9 +20,6 @@ public interface CommentService {
     // 댓글 삭제
     void deleteComment(Comment comment);
 
-    // 댓글 신고
-    void putCommentReportCount(Long commentId);
-
     // 내가 쓴 댓글
     List<UserCommentWithPostDTO> getCommentByUserId(Long userId);
 }

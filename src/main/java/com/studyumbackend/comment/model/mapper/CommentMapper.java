@@ -21,9 +21,6 @@ public interface CommentMapper {
     // 댓글 삭제
     int deleteComment(Comment comment);
 
-    // 댓글 신고
-    int updateCommentReportCount(Long commentId);
-
     // 내가 쓴 댓글
     List<UserCommentWithPostDTO> selectCommentByUserId(Long userId);
 

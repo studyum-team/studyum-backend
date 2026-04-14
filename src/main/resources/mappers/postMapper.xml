@@ -108,13 +108,6 @@
           AND user_id = #{userId}
     </delete>
 
-    <!-- 게시글 신고 -->
-    <update id="updatePostReportCount">
-        UPDATE post
-        SET post_report_count = post_report_count + 1
-        WHERE post_id = #{postId}
-    </update>
-
     <!-- 게시글 조회수 -->
     <update id="updatePostViewCount">
         UPDATE post

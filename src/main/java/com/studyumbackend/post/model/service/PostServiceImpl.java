@@ -87,16 +87,6 @@ public class PostServiceImpl implements PostService{
         }
     }
 
-    // 게시글 신고
-    @Override
-    @Transactional
-    public void putPostReportCount(Long postId) {
-        int result = postMapper.updatePostReportCount(postId);
-        if (result != 1) {
-            throw new RuntimeException("존재하지 않는 게시글입니다.");
-        }
-    }
-
     // 특정 유저가 쓴 게시글
     @Override
     @Transactional(readOnly = true)

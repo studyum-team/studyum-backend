@@ -26,9 +26,6 @@ public interface PostService {
     // 게시글 좋아요 취소
     void deletePostLike(PostLike postLike);
 
-    // 게시글 신고
-    void putPostReportCount(Long postId);
-
     // 특정 유저가 쓴 게시글
     List<PostListDTO> getPostListByUserId(Long userId);
 }
