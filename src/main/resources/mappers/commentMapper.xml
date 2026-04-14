@@ -42,13 +42,6 @@
           AND user_id = #{userId}
     </delete>
 
-    <!-- 댓글 신고 -->
-    <update id="updateCommentReportCount">
-        UPDATE comment
-        SET comment_report_count = comment_report_count + 1
-        WHERE comment_id = #{commentId}
-    </update>
-
     <!-- 내가 쓴 댓글 -->
     <select id="selectCommentByUserId" resultType="UserCommentWithPostDTO">
         SELECT *

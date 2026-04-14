@@ -28,9 +28,6 @@ public interface PostMapper {
     // 게시글 좋아요 취소
     int deletePostLike(PostLike postLike);
 
-    // 게시글 신고
-    int updatePostReportCount(Long postId);
-
     // 게시글 조회수
     int updatePostViewCount(Long postId);
 

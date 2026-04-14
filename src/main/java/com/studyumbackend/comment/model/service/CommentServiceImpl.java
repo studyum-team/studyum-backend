@@ -57,16 +57,6 @@ public class CommentServiceImpl implements CommentService{
         }
     }
 
-    // 댓글 신고
-    @Override
-    @Transactional
-    public void putCommentReportCount(Long commentId) {
-        int result = commentMapper.updateCommentReportCount(commentId);
-        if(result != 1) {
-            throw new RuntimeException("존재하지 않는 댓글입니다.");
-        }
-    }
-
     // 내가 쓴 댓글
     @Override
     @Transactional(readOnly = true)

@@ -149,21 +149,6 @@ public class PostController {
     }
 
     /**
-     * 게시글 신고
-     * POST /api/posts/{postId}/report
-     * TODO 신고 테이블 추가? 유저 중복 신고 어떻게 하지..!
-     *
-     * @param postId 신고할 게시글 ID
-     * @return 200 OK
-     */
-    @PostMapping("/{postId}/report")
-    public ResponseEntity<Void> putPostReportCount(@PathVariable Long postId) {
-         log.info("🟢 게시글 신고 postId={}", postId);
-         postService.putPostReportCount(postId);
-         return ResponseEntity.ok().build();
-    }
-
-    /**
      * 특정 유저가 쓴 게시글
      * GET /api/posts/user/{userId}
      *

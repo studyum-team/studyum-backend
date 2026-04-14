@@ -65,22 +65,6 @@ public class CommentController {
     }
 
     /**
-     * 댓글 신고
-     * Post /api/comments/{commentId}/report
-     * TODO 신고 테이블 추가? 유저 중복 신고 어떻게 하지..!
-     *
-     * @param commentId 신고할 댓글 ID
-     * @return 200 OK
-     */
-    @PostMapping("/{commentId}/report")
-    public ResponseEntity<Void> putCommentReportCount(@PathVariable Long commentId) {
-        log.info("🟢 게시글 신고 commentId={}",
-                commentId);
-        commentService.putCommentReportCount(commentId);
-        return ResponseEntity.ok().build();
-    }
-
-    /**
      * 내가 쓴 댓글
      * GET /api/comments/me
      *
