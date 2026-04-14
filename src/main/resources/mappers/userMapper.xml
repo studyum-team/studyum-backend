@@ -49,10 +49,17 @@
         WHERE user_id = #{userId}
     </update>
 
+    <!-- 회원 상태 수정 -->
+    <update id="updateUserStatus">
+        UPDATE users
+        SET user_status = 'SUSPENDED'
+        WHERE user_id = #{userId}
+    </update>
+
     <!-- 회원정보 삭제 -->
     <update id="deleteUser">
         UPDATE users
-        SET user_status = 'DEACTIVE'
+        SET user_status = 'INACTIVE'
         WHERE user_id = #{userId}
     </update>
 
