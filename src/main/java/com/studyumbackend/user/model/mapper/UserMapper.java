@@ -38,6 +38,9 @@ public interface UserMapper {
     // 회원정보 수정
     int updateUser(User user);
 
+    // 회원 상태 수정
+    int updateUserStatus(Long userId);
+
     // 회원탈퇴
     int deleteUser(Long userId);
 }

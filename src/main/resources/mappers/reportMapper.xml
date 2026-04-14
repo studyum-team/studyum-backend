@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.studyumbackend.report.model.mapper.ReportMapper">
+
+    <!-- 신고 추가 -->
+    <insert id="insertReport" parameterType="Report" useGeneratedKeys="true" keyProperty="reportId" keyColumn="report_id">
+        INSERT INTO report (target_type, target_id, report_category, report_reason, report_status)
+        VALUES (#{targetType}, #{targetId}, #{reportCategory}, #{reportReason}, #{reportStatus})
+    </insert>
+
+    <!-- 신고 중복 확인 -->
+    <select id="selectDuplicateReport" parameterType="Report" resultType="int">
+        SELECT COUNT(*)
+        FROM report
+        WHERE reporter_id = #{reporterId}
+        AND target_type = #{targetType}
+        AND target_id = #{targetId}
+        AND report_status = 'PENDING'
+    </select>
+
+    <!-- 신고 조회 -->
+    <select id="selectReport" resultType="Report">
+        SELECT *
+        FROM report
+        WHERE report_status = 'ACCEPTED'
+    </select>
+
+    <!-- 신고 상세 조회 -->
+        <select id="selectReportById" resultType="Report">
+        SELECT *
+        FROM report
+        WHERE report_id = #{reportId}
+    </select>
+
+    <!-- 신고 상태 변경 -->
+    <update id="updateReport">
+        UPDATE report
+        SET report_status = #{repostStatus}
+        WHERE report_id = #{reportId}
+    </update>
+
+</mapper>

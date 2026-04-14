@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.studyumbackend.block.model.mapper.BlockMapper">
+
+    <!-- 차단 추가 -->
+    <insert id="insertBlock" parameterType="Block" useGeneratedKeys="true" keyProperty="blockId" keyColumn="block_id">
+        INSERT INTO block (blocker_user_id, blocked_user_id)
+        VALUES (#{blockerUserId}, #{blockedUserId})
+    </insert>
+
+    <!-- 차단 삭제 -->
+    <delete id="deleteBlock">
+        DELETE FROM block
+        WHERE blocker_user_id = #{blockerUserId}
+          AND blocked_user_id = #{blockedUserId}
+    </delete>
+
+    <!-- 차단 목록 조회 -->
+    <select id="selectBlock">
+        SELECT blocked_user_id
+        FROM block
+        WHERE blocker_user_id = #{userId}
+    </select>
+
+    <!-- 차단 목록 통합 조회 -->
+    <select id="selectBlockUserInfo" resultType="Block">
+        SELECT
+        b.block_id,
+        b.blocked_user_id,
+        u.user_nickname AS blocked_user_nickname,
+        u.user_profile_image,
+        b.created_at
+        FROM block b
+        JOIN public.users u ON b.blocked_user_id = u.user_id
+        WHERE b.blocker_user_id = #{userId}
+        ORDER BY b.created_at DESC
+    </select>
+
+    <!-- 차단 여부 조회 -->
+    <select id="existsBlock" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM block
+            WHERE blocker_user_id = #{blockerUserId}
+              AND blocked_user_id = #{blockedUserId}
+        )
+    </select>
+
+    <!-- 사용자 차단 여부 조회 -->
+    <select id="isMeBlockedByOther" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM block
+            WHERE blocker_user_id = #{blockerUserId}
+              AND blocked_user_id = #{blockedUserId}
+        )
+    </select>
+
+</mapper>
