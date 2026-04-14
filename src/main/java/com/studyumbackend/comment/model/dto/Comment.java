@@ -22,4 +22,6 @@ public class Comment {
     private Integer commentReportCount;
     // 작성 일시
     private String commentCreatedAt;
+    // 댓글 상태 (신고여부)
+    private String commentStatus;
 }

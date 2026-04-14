@@ -20,4 +20,6 @@ public class UserCommentWithPostDTO {
     private Long postId;
     // 게시글 제목
     private String postTitle;
+    // 댓글 상태 (신고여부)
+    private String commentStatus;
 }

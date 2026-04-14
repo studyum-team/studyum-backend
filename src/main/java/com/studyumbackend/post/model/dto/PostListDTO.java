@@ -43,4 +43,6 @@ public class PostListDTO {
     private Long commentCount;
     // 좋아요수
     private Long likeCount;
+    // 게시글 상태 (신고여부)
+    private String postStatus;
 }

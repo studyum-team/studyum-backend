@@ -30,4 +30,6 @@ public class Post {
     private String postCreatedAt;
     // 수정일시
     private String postUpdatedAt;
+    // 게시글 상태 (신고여부)
+    private String postStatus;
 }
