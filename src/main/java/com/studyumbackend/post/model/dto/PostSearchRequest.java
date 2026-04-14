@@ -16,4 +16,6 @@ public class PostSearchRequest {
     private Long categoryId;
    // 채팅방 모집 상태
     private String chatRoomRecruitStatus;
+    // 게시글 상태 (신고여부)
+    private String postStatus;
 }

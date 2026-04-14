@@ -24,4 +24,6 @@ public class PostCommentDTO {
     private String userNickname;
     // 프로필 이미지 URL
     private String userProfileImage;
+    // 댓글 상태 (신고여부)
+    private String commentStatus;
 }
